@@ -4,7 +4,7 @@ import { validateEmail } from '../../utils/helpers';
 function ContactForm() {
     const [formState, setFormState] = useState({ name:'', email: '', message: ''});
     const { name, email, message } = formState;
-    const [errorMessage, serErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     function handleChange(e) {
         if(e.target.name === 'email'){
@@ -12,9 +12,9 @@ function ContactForm() {
             console.log(isValid);
 
             if(!isValid){
-                serErrorMessage('Your email is invalid');
+                setErrorMessage('Your email is invalid');
             } else {
-                serErrorMessage('');
+                setErrorMessage('');
             } 
         } else {
             if (!e.target.value.length) {
@@ -38,16 +38,21 @@ function ContactForm() {
             <form id="contact-form" onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="name">Name</label>
-                    <input type="text" defaultValue={name} onChange={handleChange} name="name"/>
+                    <input type="text" defaultValue={name} onBlur={handleChange} name="name"/>
                 </div>
                 <div>
                     <label htmlFor="email">Email address:</label>
-                    <input type="email" defaultValue={email} onChange={handleChange} name="email"/>
+                    <input type="email" defaultValue={email} onBlur={handleChange} name="email"/>
                 </div>
                 <div>
                     <label htmlFor="message">Message</label>
-                    <textarea name="message" defaultValue={message} onChange={handleChange} rows="5"/>
+                    <textarea name="message" defaultValue={message} onBlur={handleChange} rows="5"/>
                 </div>
+                {errorMessage && (
+                    <div>
+                        <p className="error-text">{errorMessage}</p>
+                    </div>
+                )}
                 <button type="submit">Submit</button>
             </form>
         </section>
